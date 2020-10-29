@@ -1,17 +1,26 @@
 import cv2
 import numpy as np
+import serial
+import matplotlib.pyplot as plt
+# import time
 
-face_cascade = cv2.CascadeClassifier('Sentdex/haarcascade_frontalface_default.xml')
-eye_cascade = cv2.CascadeClassifier('Sentdex/haarcascade_eye.xml')
+#ser = serial.Serial("COM5", 9600, timeout=.01)
+face_cascade = cv2.CascadeClassifier('Harrcascades/haarcascade_frontalface_default.xml')
+eye_cascade = cv2.CascadeClassifier('Harrcascades/haarcascade_eye.xml')
 
 vid = cv2.VideoCapture(0)
+# ret0,frame0 = vid.read()
+# print(frame0.shape)
+# plt.imshow(frame0)
+# plt.plot([0,0],[636,356], 'c', linewidth=1)
+# plt.show() #640,360
 #cv2.imshow('frame',frame)
 while True:
     ret,frame = vid.read()
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray,1.3,5) #depending on size of image you might want to cange vals
     for(x,y,w,h) in faces:
-        print(faces,x,y,w,h)
+        # print(faces,x,y,w,h)
 
         centX = x + (0.5*w)
         centY = y + (0.5*y)
@@ -34,4 +43,5 @@ while True:
         break
 
 cv2.destroyAllWindows()
-        #dont want to look for eyes out of face
+
+        # dont want to look for eyes out of face
