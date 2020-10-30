@@ -1,8 +1,10 @@
 #include <Servo.h>
 String incomingByte;
 int relayPin = 12;
-int serXPin = 10, serYPin = 11;
+int serXPin = 7, serYPin = 8;
+int serXVal = 0, serYVal = 0;
 int xVal, yVal;
+int preSerXVal, preSerYVal;
 Servo serX;
 Servo serY;
 String data = "X:60Y:30", fData;
@@ -13,36 +15,46 @@ void setup() {
   pinMode(relayPin, OUTPUT);
   serX.attach(serXPin);
   serY.attach(serYPin);
-
-  //  Serial.println(data.remove(data.indexOf("Y",4)));
-
+  serX.write(90);
+  serY.write(90);
+  
 }
 
 void loop() {
-  Serial.println(data);
-  //data.remove(0, (data.indexOf("Y") + 2));
-//  Serial.println(data);
-  Serial.println(getCoordX(data));
-   Serial.println(getCoordY(data));
-  //  Serial.println(
-  //  data.remove(data.indexOf("X"), 2);
-  //  data.remove(data.indexOf("Y"));
   //  Serial.println(data);
-  while (true) {
+  //  //data.remove(0, (data.indexOf("Y") + 2));
+  //  Serial.println(data);
+  //  Serial.println(getCoordX(data));
+  //  Serial.println(getCoordY(data));
 
 
+
+  delay(100);
+  if (Serial.available() > 0) {
+    incomingByte = Serial.readStringUntil('\n');
+    //    Serial.write(getCoordX(incomingByte));
+    xVal = getCoordX(incomingByte);
+    yVal = getCoordY(incomingByte);
+    Serial.print(xVal);
+    Serial.print("\t");
+    Serial.print(yVal);
+    serXVal = map(xVal, 0, 640, 160, 0);
+    serYVal = map(yVal, 0, 360, 160, 0);
+    Serial.print("\t");
+    Serial.print(serXVal);
+    Serial.print("\t");
+    Serial.println(serYVal);
+    serX.write(serXVal);
+    serY.write(serYVal);
   }
-  //  delay(10);
-  //  if (Serial.available() > 0) {
-  //    incomingByte = Serial.readStringUntil('\n');
-  //    //    Serial.write(getCoordX(incomingByte));
-  //    xVal = getCoordX(incomingByte);
-  //    yVal = getCoordY(incomingByte);
-  //    Serial.print(xVal);
-  //    Serial.print("\t");
-  //    Serial.println(yVal);
-  //    //      Serial.write(1);
-  //  }
+  else if(Serial.available() == 0) {
+    serX.write(preSerXVal);
+    serY.write(preSerYVal);
+  }
+  preSerXVal = serXVal;
+  preSerYVal = serYVal;
+
+
 }
 
 int getCoordX(String coord) {
