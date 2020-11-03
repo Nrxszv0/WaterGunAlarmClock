@@ -10,4 +10,4 @@ def speak(text):
     tts.save(fileName)
     playsound.playsound(fileName)
 
-speak("cap, you sleepin")
+speak("why isn't this working?")
