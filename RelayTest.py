@@ -1,6 +1,6 @@
 import serial
 import time
-ser = serial.Serial("COM5", 9600, timeout=.01)
+ser = serial.Serial("COM3", 9600, timeout=.01)
 
 while True:
     i = input("input(on/off): ").strip()

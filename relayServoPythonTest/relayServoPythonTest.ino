@@ -19,7 +19,6 @@ void setup() {
   serY.attach(serYPin);
   serX.write(90);
   serY.write(90);
-
 }
 
 void loop() {
